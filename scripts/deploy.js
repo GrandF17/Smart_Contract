@@ -71,12 +71,21 @@ async function main() {
     if(isOwner == signer1.address) {
       await nft.connect(signer1).approve(stake.address, i)
       await stake.connect(signer1).stake(i)
+      console.log("Owner of id(" + i + ") is " + await nft.ownerOf(i))
     }
   }
 
-  for(var i = 1; i <= 10; i++) {
-    console.log("Owner of id(" + i + ") is " + await nft.ownerOf(i))    
+  var i = 0;
+  while(i < 10000000000) {
+    i++;
   }
+
+  console.log("Owner's old balance = " + await token.balanceOf(signer1.address) + "\n")
+  for(var i = 1; i <= 10; i++) {
+    await stake.connect(signer1).unstake(i)  
+  }
+
+  console.log("Owner's new balance = " + await token.balanceOf(signer1.address) + "\n")
 }
 
 main()
